@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-
-const url="mongodb+srv://gvijay4004:Fastfood%402002@cluster0.gb2rwlo.mongodb.net/FastFoodDatabase?retryWrites=true&w=majority";
+// import { mongoKey } from "./secret";
+const mongoKey = require('./secret.js');
+const url="mongodb+srv://gvijay4004:"+mongoKey+"@cluster0.gb2rwlo.mongodb.net/FastFoodDatabase?retryWrites=true&w=majority";
 const url1="mongodb://localhost:27017/FastFood";
 const mongoDB= async ()=>{
     mongoose.connect(url, { useNewUrlParser: true },async (err, res) => {

@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const {Schema}=mongoose;
 
 const cartSchema= new Schema({
-    email:String,
+    email:{type:String,
+        unique:true},
     items:{
         type:Array
     }

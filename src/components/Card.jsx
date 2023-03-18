@@ -6,6 +6,27 @@ export default function Card(props) {
   let options = props.options;
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState("");
+  const [data, setData] = useState([]);
+  let userEmail = localStorage.getItem("userEmail");
+  const loadcart = async () => {
+    // console.log('async');
+    const res = await fetch("http://localhost:3000/api/getCart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: userEmail,
+      }),
+    });
+    const data = await res.json();
+    // global.data
+    // console.log(data);
+    setData(data.response.items);
+  };
+  useEffect(() => {
+    loadcart();
+  }, []);
   let priceOptions = [];
   if (options !== undefined) {
     priceOptions = Object.keys(options);
@@ -13,16 +34,12 @@ export default function Card(props) {
   const priceRef = useRef();
   let finalPrice = qty * parseInt(options[size]);
   let dispatch = useDispatchCart();
-  var authToken = localStorage.getItem("authToken");
-  // console.log(authToken)
-  // localStorage.removeItem(authToken)
-  let data = JSON.parse(localStorage.getItem(String(authToken)));
-  // console.log(data);
+
   const handleAddToCart = async () => {
     let food = [];
-    // console.log('data',data)
+    console.log("props",props);
+
     if (data === null) {
-      // console.log(data);
       await dispatch({
         type: "ADD",
         id: props.foodItem._id,
@@ -30,6 +47,7 @@ export default function Card(props) {
         img: props.foodItem.img,
         description: props.foodItem.description,
         price: finalPrice,
+        itemPrice:parseInt(options[size]),
         qty: qty,
         size: size,
       });
@@ -47,6 +65,7 @@ export default function Card(props) {
             index: props.index,
             id: props.foodItem._id,
             price: finalPrice,
+            itemPrice:parseInt(options[size]),
             qty: qty,
           });
           return;
@@ -57,6 +76,7 @@ export default function Card(props) {
             name: props.foodItem.name,
             img: props.foodItem.img,
             description: props.foodItem.description,
+            itemPrice:parseInt(options[size]),
             price: finalPrice,
             qty: qty,
             size: size,
@@ -73,6 +93,7 @@ export default function Card(props) {
         img: props.foodItem.img,
         description: props.foodItem.description,
         price: finalPrice,
+        itemPrice:parseInt(options[size]),
         qty: qty,
         size: size,
       });
@@ -135,8 +156,6 @@ export default function Card(props) {
                   );
                 })
               : ""}
-            {/* <option value='half' className='item'>Half</option>
-            <option value='full' className='item'>Full</option> */}
           </select>
           <div class="price">
             <div>{finalPrice}/-</div>

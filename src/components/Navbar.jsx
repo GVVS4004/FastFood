@@ -1,10 +1,10 @@
-import React, { useState }  from "react";
+import React, { useState ,useEffect }  from "react";
 import {Link} from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Navcss from "../css/Navbar.css"
-import Modal from "../Modal";
-import { useCart } from "./ContextReducer";
-import Cart from "./Cart";
+// import Modal from "../Modal";
+// import { useCart } from "./ContextReducer";
+// import Cart from "./Cart";
 import { useReducer } from "react";
 
 
@@ -26,35 +26,25 @@ function Nav() {
       return JSON.stringify(objectName) === "{}";
     };
 
-  const [cartView,setCartView]= useState(false);
-  var authToken = localStorage.getItem('authToken')
-  let data =JSON.parse(localStorage.getItem(String(authToken)));
-  // if (data.isObjectEmpty()){
-  //   data[0]=null
-  // }
-  // let data={}
-  // console.log(data)
-  // try{
-  //   console.log(data);
-  // if (isObjectEmpty(data)){
-  //   console.log("d",data)
-  //     data=null
-  //     // data!==null?data.length:0
-  //   }
-  // }
-  // catch(error){
-  //   console.log(error);
-  // }
 
-  // console.log("len",data)
-  // console.log('auth',authToken)
-  // localStorage.setItem(authToken,JSON.stringify(data))
-  // console.log('hi',JSON.parse(localStorage.getItem(authToken)))
-  const [ignored,forceUpdate]=useReducer(x=>x-1,0);
-    // localStorage.removeItem(authToken);
-    window.addEventListener('click',(ev)=>{
-      forceUpdate();
-    })
+  const [data,setData] =useState([])
+  let userEmail = localStorage.getItem("userEmail");
+  const loadcart = async () => {
+    const res = await fetch("http://localhost:3000/api/getCart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: userEmail,
+      }),
+    });
+    const data= await res.json()
+    setData(data.response.items);
+  }
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+  useEffect(()=>{loadcart();forceUpdate()},[data]);
 
 
   return (
@@ -132,7 +122,6 @@ function Nav() {
 </span>
 </button>
             </li>
-            {/* {cartView?<Modal onClose={()=>setCartView(false )}><Cart /></Modal>:null} */}
             <li className="nav-item">
               <button
                 className="nav-links"

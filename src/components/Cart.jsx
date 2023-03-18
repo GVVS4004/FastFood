@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/Cart.css";
-import { useCart } from "./ContextReducer";
 import { useDispatchCart } from "./ContextReducer";
 import { useReducer } from "react";
 
 export default function Cart(props) {
-  // let data=useCart()
-  // console.log(data[0],data[1])
-  // let authToken=localStorage.getItem('authToken')
-  // console.log(authToken);
-  // let data=JSON.parse(localStorage.getItem(authToken))
-  //   localStorage.setItem(authToken,JSON.stringify(data))
-  //   console.log('hi',JSON.parse(localStorage.getItem(authToken)))
-  // console.log(data);
-  const [data,setData] =useState([])
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [data,setData] =useState([]);
+  const [deliveryPrice,setDeliveryPrice]=useState(10);
+  const [deliveryType,setDeliveryType]=useState("Standard-Delivery- 10.00");
   let userEmail = localStorage.getItem("userEmail");
+  const navigate=useNavigate();
   const loadcart = async () => {
-    // console.log('async');
     const res = await fetch("http://localhost:3000/api/getCart", {
       method: "POST",
       headers: {
@@ -27,27 +22,45 @@ export default function Cart(props) {
       }),
     });
     const data= await res.json()
-    // global.data
-    console.log(data.res.items);
-    setData(data.res.items)
+    setData(data.response.items);
   };
-  useEffect(()=>{loadcart()},[]);
+  useEffect(()=>{loadcart()},[data]);
+  const handleAddToCart = async (index) => {
+    await dispatch({
+      type: "CARTUPDATE",
+      index: index,
+      id: data[index].id,
+      price:  data[index].price,
+      qty:  data[index].qty,
+      operation: "ADD"
+    })
+
+  };
+  const handleSubToCart = async (index) => {
+    
+    await dispatch({
+      type: "CARTUPDATE",
+      index: index,
+      id: data[index].id,
+      price:  data[index].price,
+      qty:  data[index].qty,
+      operation: "SUB"
+    })
+
+  };
+  var totalPrice=0;
+  data.map((items)=>{totalPrice+=items.price});
+  totalPrice+=deliveryPrice;
   
-  var authToken = localStorage.getItem("authToken");
-  // var data = JSON.parse(localStorage.getItem(authToken));
-  // console.log("data", data);
   let dispatch = useDispatchCart();
 
-  const [ignored, forceUpdate] = useReducer((x) => x + 1, 0);
 
   const handleRemove = async (index) => {
     await dispatch({ type: "REMOVE", index: index });
     forceUpdate();
   };
-  const add = async (index) => {};
-  const sub = () => {};
   const handleCheckOut = async () => {
-    // console.log(userEmail);
+    console.log("checkOut",data);
     let response = await fetch("http://localhost:3000/api/orderData", {
       method: "POST",
       headers: {
@@ -57,6 +70,7 @@ export default function Cart(props) {
         order_data: data,
         email: userEmail,
         order_date: new Date().toDateString(),
+        delivery_type:deliveryType,
       }),
     });
 
@@ -65,12 +79,13 @@ export default function Cart(props) {
       forceUpdate();
     }
   };
+  const goBack=()=>{
+    navigate('/home');
+  }
+  
   const isObjectEmpty = (objectName) => {
     return JSON.stringify(objectName) === "{}";
   };
-  console.log('data',data);
-  // localStorage.removeItem(authToken)
-  // console.log(data)
   return (
     <div>
       {data!==null ? (
@@ -124,9 +139,10 @@ export default function Cart(props) {
                                     <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
                                       <button
                                         className="btn btn-link px-2"
-                                        onClick={(index) => {
-                                          sub(index);
-                                        }}
+                                        onClick={
+                              
+                                         ()=>{ handleSubToCart(index)}
+                                        }
                                       >
                                         <i className="fas fa-minus"></i>
                                       </button>
@@ -143,9 +159,9 @@ export default function Cart(props) {
 
                                       <button
                                         className="btn btn-link px-2"
-                                        onClick={(index) => {
-                                          add(index);
-                                        }}
+                                        onClick= {
+                                          ()=>{handleAddToCart(index)}
+                                        }
                                       >
                                         <i className="fas fa-plus"></i>
                                       </button>
@@ -160,7 +176,7 @@ export default function Cart(props) {
                                           backgroundColor: "transparent",
                                         }}
                                         className="text-muted"
-                                        onClick={(index) => {
+                                        onClick={()=>{
                                           handleRemove(index);
                                         }}
                                       >
@@ -171,16 +187,16 @@ export default function Cart(props) {
                                 </div>
                               );
                             })
-                          : <div>hello</div>}
+                          : <div>Cart Is empty</div>}
 
                         <hr className="my-4" />
 
                         <div className="pt-5">
                           <h6 className="mb-0" style={{ color: "black" }}>
-                            <a href="#!" style={{ color: "black" }}>
+                            <button onClick={goBack} style={{ color: "black",border:"None", backgroundColor:"transparent" }}>
                               <i className="fas fa-long-arrow-alt-left me-2"></i>
                               Back to shop
-                            </a>
+                            </button>
                           </h6>
                         </div>
                       </div>
@@ -191,40 +207,39 @@ export default function Cart(props) {
                     >
                       <div className="p-5">
                         <h3 className="fw-bold mb-5 mt-2 pt-1">Summary</h3>
-                        <hr className="my-4" />
+                  
 
                         <div className="d-flex justify-content-between mb-4">
                           <h5 className="text-uppercase">
                             items {data !== null ? data.length : 0}
                           </h5>
-                          <h5>{data != null ? "" : 0}</h5>
+                          <br></br>
+                          <hr />
                         </div>
-
+                        <div style={{alignItems:"center"}}>
+                        <h4 >{data.map((items,index)=>{
+                             return (<div style={{alignItems:"center"}}> <div>{">"}  {items.name}</div><br></br>
+                             </div>);
+                          <br></br>
+                          })}</h4>
+                        </div>
+                        <br></br>
+              
+            
                         <h5 className="text-uppercase mb-3">Shipping</h5>
 
                         <div className="mb-4 pb-2">
-                          <select className="select">
-                            <option value="1">Standard-Delivery- €5.00</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                            <option value="4">Four</option>
+                          <select className="select" onChange={(e)=>{setDeliveryPrice(parseInt(e.target.value));}}>
+                            <option value={10} onClick={()=>{setDeliveryType(String("Standard-Delivery- 10.00"))}} key={"Standard-Delivery- 10.00"} id="defaultDelivery">Standard-Delivery- 10.00</option>
+                            <option value={50} onClick={()=>{setDeliveryType(String("Express-Delivery - 50.00"))}} key={"Express-Delivery - 50.00"} id="expressDelivery">Express-Delivery - 50.00</option>  
                           </select>
                         </div>
-                        {/* 
-                  <h5 className="text-uppercase mb-3">Give code</h5>
-
-                  <div className="mb-5">
-                    <div className="form-outline">
-                      <input type="text" id="form3Examplea2" className="form-control form-control-lg" />
-                      <label className="form-label" for="form3Examplea2">Enter your code</label>
-                    </div>
-                  </div> */}
                         <div>
                           <hr className="my-4" />
 
                           <div className="d-flex justify-content-between mb-5">
                             <h5 className="text-uppercase">Total price</h5>
-                            <h5>€ 137.00</h5>
+                            <h5>{totalPrice}</h5>
                           </div>
 
                           <button
