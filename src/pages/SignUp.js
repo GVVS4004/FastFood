@@ -29,8 +29,8 @@ export default function SignUp() {
 
 
   return (
-    <div>
-        <section className="vh-100" style={{"background-color": "black"}}>
+    <div >
+        <section className="vh-100" style={{"background-color": "black" ,paddingTop:"20px"}} >
   <div className="container h-100">
     <div className="row d-flex justify-content-center align-items-center h-100">
       <div className="col-lg-12 col-xl-11">

@@ -48,11 +48,11 @@ function Nav() {
 
 
   return (
-    <div>
+    <div >
      <div className={click ? "main-container" : ""}  onClick={()=>Close()} />
       <nav className="navbar" onClick={e => e.stopPropagation()}>
         <div className="nav-container">
-          <Link exact to="/home" className="nav-logo">
+          <Link exact to="/" className="nav-logo">
             <h2 >FastFood</h2>
           </Link>
           {(!localStorage.getItem('authToken'))?
@@ -60,7 +60,7 @@ function Nav() {
             <li className="nav-item">
               <Link
                 exact
-                to="/home"
+                to="/"
                 activeClassName="active"
                 className="nav-links"
                 onClick={click ? handleClick : null}
@@ -104,7 +104,7 @@ function Nav() {
               <button
               
                 className="nav-links"
-                onClick={click ? handleClick : null} style={{backgroundColor:"transparent",border:"none", height:""}}
+                onClick={()=>{navigate('/myorders')}} style={{backgroundColor:"transparent",border:"none", height:""}}
               >
                 Myorders
               </button>

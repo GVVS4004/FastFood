@@ -21,7 +21,12 @@ const OrderSchema = new Schema({
         type:String,
         required:true,
     },
+    order_total:{
+        type:Number,
+        required:true,
+    },
     required:true,
+
 }
 })
 

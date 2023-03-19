@@ -71,6 +71,7 @@ export default function Cart(props) {
         email: userEmail,
         order_date: new Date().toDateString(),
         delivery_type:deliveryType,
+        order_total:totalPrice,
       }),
     });
 
@@ -82,11 +83,14 @@ export default function Cart(props) {
   const goBack=()=>{
     navigate('/home');
   }
+  const authToken=localStorage.getItem('authToken');
   
   const isObjectEmpty = (objectName) => {
     return JSON.stringify(objectName) === "{}";
   };
   return (
+    <div>
+      {authToken!==null?
     <div>
       {data!==null ? (
         <div className="container py-5 h-100">
@@ -262,6 +266,9 @@ export default function Cart(props) {
       ) : (
         ""
       )}
+    </div>:<div  style={{display: "flex",
+    justifyContent: "center",
+    alignItems: "center",}}><h1>Login to view this page</h1></div>}
     </div>
   );
 }

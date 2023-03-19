@@ -1,0 +1,1 @@
+module.exports ="Fastfood%402002";

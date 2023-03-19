@@ -14,6 +14,7 @@ app.use('/api',require("./Routes/CreateUser"));
 app.use('/api',require("./Routes/DisplayData"));
 app.use('/api',require("./Routes/OderData"));
 app.use('/api',require('./Routes/UserCart'));
+app.use('/api',require('./Routes/UserContact'))
 app.get('/',(req,res)=>{
     res.send("hello world");
 })

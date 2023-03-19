@@ -1,104 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatchCart, useCart } from "./ContextReducer";
 import "../css/Card.css";
 
-export default function Card(props) {
+export default function MenuCard(props) {
   let options = props.options;
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState("");
   const [data, setData] = useState([]);
-  let userEmail = localStorage.getItem("userEmail");
-  const loadcart = async () => {
-    // console.log('async');
-    const res = await fetch("http://localhost:3000/api/getCart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: userEmail,
-      }),
-    });
-    const data = await res.json();
-    // global.data
-    // console.log(data);
-    setData(data.response.items);
-  };
-  useEffect(() => {
-    loadcart();
-  }, []);
+
+  const navigate=useNavigate();
   let priceOptions = [];
   if (options !== undefined) {
     priceOptions = Object.keys(options);
   }
   const priceRef = useRef();
   let finalPrice = qty * parseInt(options[size]);
-  let dispatch = useDispatchCart();
+//   let dispatch = useDispatchCart();
 
-  const handleAddToCart = async () => {
-    let food = [];
-    console.log("props",props);
-
-    if (data === null) {
-      await dispatch({
-        type: "ADD",
-        id: props.foodItem._id,
-        name: props.foodItem.name,
-        img: props.foodItem.img,
-        description: props.foodItem.description,
-        price: finalPrice,
-        itemPrice:parseInt(options[size]),
-        qty: qty,
-        size: size,
-      });
-    } else {
-      for (const item of data) {
-        if (item.id === props.foodItem._id) {
-          food = item;
-          break;
-        }
-      }
-      if (food !== []) {
-        if (food.size === size) {
-          await dispatch({
-            type: "UPDATE",
-            index: props.index,
-            id: props.foodItem._id,
-            price: finalPrice,
-            itemPrice:parseInt(options[size]),
-            qty: qty,
-          });
-          return;
-        } else if (food.size !== size) {
-          await dispatch({
-            type: "ADD",
-            id: props.foodItem._id,
-            name: props.foodItem.name,
-            img: props.foodItem.img,
-            description: props.foodItem.description,
-            itemPrice:parseInt(options[size]),
-            price: finalPrice,
-            qty: qty,
-            size: size,
-          });
-          return;
-        }
-        return;
-      }
-
-      await dispatch({
-        type: "ADD",
-        id: props.foodItem._id,
-        name: props.foodItem.name,
-        img: props.foodItem.img,
-        description: props.foodItem.description,
-        price: finalPrice,
-        itemPrice:parseInt(options[size]),
-        qty: qty,
-        size: size,
-      });
-    }
-  };
+  const handleAddToCart = () => {
+    navigate('/login')
+  }
   useEffect(() => {
     setSize(priceRef.current.value);
   }, []);
@@ -172,4 +94,5 @@ export default function Card(props) {
       </button>
     </figure>
   );
-}
+            }
+
