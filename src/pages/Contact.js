@@ -11,7 +11,7 @@ export default function Contact() {
 }
 const submit =async (e)=>{
   e.preventDefault();
-  const response = await fetch("/api/contacts",{
+  const response = await fetch(`${process.env.REACT_APP_SERVER}/api/contacts`,{
       method:'POST',
       headers:{
           "Content-Type":"application/json",
@@ -23,7 +23,7 @@ const submit =async (e)=>{
   if (!json.success){
       alert("Enter valid credentials");
   }
-  // console.log("hi")
+ 
   setContacts([]);
 
   navigate('/');
@@ -64,7 +64,7 @@ const submit =async (e)=>{
 
             <div className="col-md-6 col-sm-6 contact-right" >
                         
-                        <form novalidate action="http://localhost:5000/api/contacts" method="POST" onSubmit={submit}>
+                        <form novalidate action={`${process.env.REACT_APP_SERVER}/api/contacts`} method="POST" onSubmit={submit}>
                              <div className="form-group has-feedback">
                                 <label className="sr-only">First name:</label>
                                 <input type="text" name="Firstname" className="form-control" placeholder="First name" value={contacts.Firstname} required onChange={onChange}/>

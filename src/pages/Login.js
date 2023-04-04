@@ -4,10 +4,10 @@ import SignUp from './SignUp'
 export default function Login() {
   const [cred,setCred]=new useState({email:"",password:""});
   let navigate = useNavigate()
-
+  
   const handleSubmit= async function(e){
     e.preventDefault();
-    const response = await fetch("/api/authUser",{
+    const response = await fetch(`${process.env.REACT_APP_SERVER}/api/authUser`,{
         method:'POST',
         headers:{
             "Content-Type":"application/json",

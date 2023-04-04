@@ -7,7 +7,7 @@ function Menu() {
   const [foodItems, setFoodItems] = useState([]);
   const [search, setSearch] = useState("");
   const loaddata = async () => {
-    let response = await fetch("/api/foodData", {
+    let response = await fetch(`${process.env.REACT_APP_SERVER}/api/foodData`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

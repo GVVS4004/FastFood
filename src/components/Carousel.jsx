@@ -41,14 +41,6 @@ export default function Carousel(props) {
       <img src="https://source.unsplash.com/random/300×300?momos" className="d-block w-100" alt="Third" style={{filter:"brightness(50%)",height:"600px",width:"600px",objectFit:"cover"}} />
     </div>
   </div>
-  {/* <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span className="visually-hidden">Previous</span>
-  </button>
-  <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-    <span className="visually-hidden">Next</span>
-  </button> */}
 </div>
   )
 }

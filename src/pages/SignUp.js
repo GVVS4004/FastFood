@@ -10,7 +10,7 @@ export default function SignUp() {
         // console.log("hi")
         // console.log(credentials.name);
             e.preventDefault();
-            const response = await fetch("/api/createUser",{
+            const response = await fetch(`${process.env.REACT_APP_SERVER}/api/createUser`,{
                 method:'POST',
                 headers:{
                     "Content-Type":"application/json",

@@ -12,7 +12,7 @@ export default function Cart(props) {
   let userEmail = localStorage.getItem("userEmail");
   const navigate=useNavigate();
   const loadcart = async () => {
-    const res = await fetch("/api/getCart", {
+    const res = await fetch(`${process.env.REACT_APP_SERVER}/api/getCart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export default function Cart(props) {
   };
   const handleCheckOut = async () => {
     console.log("checkOut",data);
-    let response = await fetch("/api/orderData", {
+    let response = await fetch(`${process.env.REACT_APP_SERVER}/api/orderData`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

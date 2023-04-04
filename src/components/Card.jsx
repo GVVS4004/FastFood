@@ -10,7 +10,7 @@ export default function Card(props) {
   let userEmail = localStorage.getItem("userEmail");
   const loadcart = async () => {
     // console.log('async');
-    const res = await fetch("/api/getCart", {
+    const res = await fetch(`${process.env.REACT_APP_SERVER}/api/getCart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export default function Card(props) {
 
   const handleAddToCart = async () => {
     let food = [];
-    console.log("props",props);
+    // console.log("props",props);
 
     if (data === null) {
       await dispatch({

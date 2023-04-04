@@ -6,7 +6,7 @@ export default function MyOrders() {
     // const [orders,setOrders]=useState([]);
     const loadOrders= async()=>{
         // console.log("HE")
-        const response= await fetch('/api/getOrders',{method: "POST",
+        const response= await fetch(`${process.env.REACT_APP_SERVER}/api/getOrders`,{method: "POST",
         headers: {
           "Content-Type": "application/json",
         },

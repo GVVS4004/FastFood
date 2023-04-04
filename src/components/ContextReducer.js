@@ -23,7 +23,7 @@ const reducer = (state, action) => {
         },
       ];
       var loadcart = async () => {
-        const response = await fetch("/api/UserCart", {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/UserCart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -38,7 +38,7 @@ const reducer = (state, action) => {
       newAr.splice(action.index, 1);
      
       var loadcart = async () => {
-        const response = await fetch("/api/UserCart", {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/UserCart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const reducer = (state, action) => {
         }
       });
       var loadcart = async () => {
-        const response = await fetch("/api/UserCart", {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/UserCart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const reducer = (state, action) => {
     case "DROP":
       newAr=[];
       var loadcart = async () => {
-        const response = await fetch("/api/UserCart", {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/UserCart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const reducer = (state, action) => {
         }
       });
       var loadcart = async () => {
-        const response = await fetch("/api/UserCart", {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/UserCart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -132,7 +132,7 @@ const reducer = (state, action) => {
 export default function CartProvider({ children }) {
     var [newAr,setNewAr] = useState([]);
       var loadcart = async () => {
-        const res = await fetch("/api/getCart", {
+        const res = await fetch(`${process.env.REACT_APP_SERVER}/api/getCart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

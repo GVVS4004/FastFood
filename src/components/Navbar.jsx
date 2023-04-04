@@ -30,7 +30,7 @@ function Nav() {
   const [data,setData] =useState([])
   let userEmail = localStorage.getItem("userEmail");
   const loadcart = async () => {
-    const res = await fetch("/api/getCart", {
+    const res = await fetch(`${process.env.REACT_APP_SERVER}/api/getCart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,6 +40,7 @@ function Nav() {
       }),
     });
     const data= await res.json()
+    // console.log(data.response.items);
     setData(data.response.items);
   }
   const [, forceUpdate] = useReducer(x => x + 1, 0);
@@ -142,5 +143,5 @@ function Nav() {
 }
 
 
-// ReactDOM.render(<App />, document.getElementById('app'));
+
 export default Nav;
