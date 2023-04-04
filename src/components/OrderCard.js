@@ -5,12 +5,6 @@ import "../css/Card.css";
 
 export default function OrderCard(props) {
   let options = props.options;
-  
-
-//   const navigate=useNavigate();
-//   console.log("props",props)
-
-
   useEffect(() => {
   }, []);
 
@@ -38,9 +32,6 @@ export default function OrderCard(props) {
           <select
             className="m-2 h200 bg-warning rounded"
             style={{ marginRight: "0px" }}
-            // onChange={(e) => {
-            //   setQty(e.target.value);
-            // }}
           >
             {Array.from(Array(6), (e, i) => {
               return (
@@ -55,19 +46,8 @@ export default function OrderCard(props) {
             className="m-3 h200 bg-danger rounded"
 
             style={{ marginLeft: "0px" }}
-            // onChange={(e) => {
-            //   setSize(e.target.value);
-            // }}
           >
-            {/* {priceOptions !== []
-              ? priceOptions.map((data) => {
-                  return (
-                    <option key={data} vlaue={data}>
-                      {data}
-                    </option>
-                  );
-                })
-              : ""} */}
+            
               <option value={props.order.size} >{props.order.size}</option>
           </select>
           <div class="price">

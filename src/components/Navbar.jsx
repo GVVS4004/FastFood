@@ -30,7 +30,7 @@ function Nav() {
   const [data,setData] =useState([])
   let userEmail = localStorage.getItem("userEmail");
   const loadcart = async () => {
-    const res = await fetch("http://localhost:3000/api/getCart", {
+    const res = await fetch("/api/getCart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

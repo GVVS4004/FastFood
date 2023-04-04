@@ -23,7 +23,7 @@ const reducer = (state, action) => {
         },
       ];
       var loadcart = async () => {
-        const response = await fetch("http://localhost:5000/api/UserCart", {
+        const response = await fetch("/api/UserCart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -38,7 +38,7 @@ const reducer = (state, action) => {
       newAr.splice(action.index, 1);
      
       var loadcart = async () => {
-        const response = await fetch("http://localhost:5000/api/UserCart", {
+        const response = await fetch("/api/UserCart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const reducer = (state, action) => {
         }
       });
       var loadcart = async () => {
-        const response = await fetch("http://localhost:5000/api/UserCart", {
+        const response = await fetch("/api/UserCart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const reducer = (state, action) => {
     case "DROP":
       newAr=[];
       var loadcart = async () => {
-        const response = await fetch("http://localhost:5000/api/UserCart", {
+        const response = await fetch("/api/UserCart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -107,7 +107,7 @@ const reducer = (state, action) => {
         }
       });
       var loadcart = async () => {
-        const response = await fetch("http://localhost:5000/api/UserCart", {
+        const response = await fetch("/api/UserCart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -132,7 +132,7 @@ const reducer = (state, action) => {
 export default function CartProvider({ children }) {
     var [newAr,setNewAr] = useState([]);
       var loadcart = async () => {
-        const res = await fetch("http://localhost:3000/api/getCart", {
+        const res = await fetch("/api/getCart", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -142,17 +142,13 @@ export default function CartProvider({ children }) {
           }),
         });
         const data = await res.json();
-        // global.data
-        // console.log("reddata",data.response.items);
-    
-        // const newState = [...state, data.res.items];
         setNewAr(data.response.items);
         dispatch({type:"INITIAL",items:data.response.items});
-        // console.log("initial",state)
+      
 
       };
       const [state, dispatch] = useReducer(reducer,[]);
-  // if (set===false){
+ 
   
   useEffect(() => {
     // console.log(set);

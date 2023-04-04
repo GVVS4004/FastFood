@@ -27,8 +27,8 @@ router.post ("/orderData",bodyParser.json(),async(req,res)=>{
     }
     else{
         try{
-            await Order.findOneAndUpdate({email:req.body.email},{$push:{orders:[{order_data:data,order_date:req.body.order_date,
-                delivery_type:req.body.delivery_type,order_total:req.body.order_total}]}}).then(()=>{
+            await Order.findOneAndUpdate({email:req.body.email},{$push:{orders:{order_data:data,order_date:req.body.order_date,
+                delivery_type:req.body.delivery_type,order_total:req.body.order_total}}}).then(()=>{
                 res.json({success:true})
             })
         }catch(error){

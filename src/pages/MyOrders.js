@@ -6,7 +6,7 @@ export default function MyOrders() {
     // const [orders,setOrders]=useState([]);
     const loadOrders= async()=>{
         // console.log("HE")
-        const response= await fetch('http://localhost:5000/api/getOrders',{method: "POST",
+        const response= await fetch('/api/getOrders',{method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -16,7 +16,7 @@ export default function MyOrders() {
     });
     // console.log('hell')
     const data=await response.json()
-    // console.log("orders",data.data.orders);
+    console.log("orders",data.data.orders);
     setOrdersData(data.data.orders);
     }
     // loadOrders()

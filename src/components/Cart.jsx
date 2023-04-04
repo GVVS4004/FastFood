@@ -12,7 +12,7 @@ export default function Cart(props) {
   let userEmail = localStorage.getItem("userEmail");
   const navigate=useNavigate();
   const loadcart = async () => {
-    const res = await fetch("http://localhost:3000/api/getCart", {
+    const res = await fetch("/api/getCart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export default function Cart(props) {
   };
   const handleCheckOut = async () => {
     console.log("checkOut",data);
-    let response = await fetch("http://localhost:3000/api/orderData", {
+    let response = await fetch("/api/orderData", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
