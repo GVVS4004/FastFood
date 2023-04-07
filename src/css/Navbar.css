@@ -193,9 +193,6 @@ body {
     .nav-logo h2 {
       display: none;
     }
-    .nav-menu{
-      display: none;
-    }
   }
 
   .fa-stack[data-count]:after{
