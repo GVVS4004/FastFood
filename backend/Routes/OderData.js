@@ -15,8 +15,11 @@ router.post ("/orderData",bodyParser.json(),async(req,res)=>{
                 orders:[{
                 order_data:data,
                 order_date:req.body.order_date,
+                order_timeStamp:new Date(),
                 delivery_type:req.body.delivery_type,
-                order_total:req.body.order_total}]
+                order_total:req.body.order_total,
+                order_status:"pending",
+            }]
             }).then(()=>{
                 res.json({success:true})
             })
@@ -28,7 +31,7 @@ router.post ("/orderData",bodyParser.json(),async(req,res)=>{
     else{
         try{
             await Order.findOneAndUpdate({email:req.body.email},{$push:{orders:{order_data:data,order_date:req.body.order_date,
-                delivery_type:req.body.delivery_type,order_total:req.body.order_total}}}).then(()=>{
+                delivery_type:req.body.delivery_type,order_total:req.body.order_total,order_status:"pending"}}}).then(()=>{
                 res.json({success:true})
             })
         }catch(error){
@@ -47,6 +50,15 @@ router.post('/getOrders',bodyParser.json(),async (req,res)=>{
         return res.json({success:false});
     }
     
+})
+router.post('/adminOrders',bodyParser.json(),async(req,res)=>{
+    const response=await Order.aggregate([
+        { $unwind: "$orders" },
+        { $sort: { "orders.order_date": 1 } },
+        { $group: { _id: null, orders: { $push: "$orders" } } },
+        { $project: { _id: 0, orders: 1 } }
+      ])
+    return res.json(response);
 })
 
 module.exports =router;

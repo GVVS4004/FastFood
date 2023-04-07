@@ -10,13 +10,26 @@ import MyOrders from './pages/MyOrders';
 import {
   BrowserRouter as Router,Routes,Route,
 } from 'react-router-dom';
+
 import Nav from './components/Navbar';
 import SignUp from './pages/SignUp';
 import CartProvider from './components/ContextReducer';
+import AdminHome from './pages/Admin';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 export default function App(){
+  const navigate=useNavigate()
+  const authToken=localStorage.getItem("authToken");
+  useEffect(()=>{
+    if (authToken){
+      navigate('/home');
+    }
+  },[authToken])
+  
   return (
-    <CartProvider >
-       <Router >
+    
+    // <CartProvider >
+      //  {/* <Router > */}
         <div >
         <Nav />
         <LandingPage />
@@ -28,11 +41,12 @@ export default function App(){
             <Route exact path='/cart' element={<Cart />} /> 
             <Route exact path='/menu' element={<Menu />} />
             <Route exact path='/myorders' element={<MyOrders />} />
+            <Route exact path='/adminHome' element={<AdminHome />} />
           </Routes>
-          <Footer />
+          {/* <Footer /> */}
         </div>
-      </Router> 
-    </CartProvider>
+      // </Router> 
+    // </CartProvider>
   );
 }
 

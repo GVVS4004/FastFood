@@ -1,14 +1,13 @@
 
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 export default function SignUp() {
+    const navigate=useNavigate();
     
     const [credentials,setCredentials] = useState({name:"",email:"",password:"",location:""})
 
     const handleSubmit = async function(e){
-        // console.log("hi")
-        // console.log(credentials.name);
             e.preventDefault();
             const response = await fetch(`${process.env.REACT_APP_SERVER}/api/createUser`,{
                 method:'POST',
@@ -21,6 +20,13 @@ export default function SignUp() {
             console.log(json);
             if (!json.success){
                 alert("Enter valid credentials");
+            }
+            else{
+              setCredentials({});
+              localStorage.setItem("userEmail",credentials.email);
+              localStorage.setItem('authToken',json.authToken)
+              navigate("/home");
+              
             }
     }
     const onChange =function(values){

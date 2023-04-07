@@ -11,12 +11,12 @@ import { useReducer } from "react";
 function Nav() {
   const [click, setClick] = React.useState(false);
   const navigate = useNavigate();
-  const handleClick = () => setClick(!click);
+  const handleClick = () => {setClick(!click);}
   const Close = () => setClick(false);
   const handleLogout = ()=>{
     let authToken=localStorage.getItem('authToken')
     localStorage.removeItem('authToken');
-    localStorage.removeItem(authToken);
+    // localStorage.removeItem(authToken);
     navigate("/");
   }
   const showCart=()=>{
@@ -47,15 +47,15 @@ function Nav() {
 
   useEffect(()=>{loadcart();forceUpdate()},[data]);
 
-
+if (window.location.pathname!=='/adminHome' && !localStorage.getItem('authAdminToken')){
   return (
     <div >
      <div className={click ? "main-container" : ""}  onClick={()=>Close()} />
       <nav className="navbar" onClick={e => e.stopPropagation()}>
         <div className="nav-container">
-          <Link exact to="/" className="nav-logo">
+          <div exact to="/" className="nav-logo">
             <h2 >FastFood</h2>
-          </Link>
+          </div>
           {(!localStorage.getItem('authToken'))?
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li className="nav-item">
@@ -64,7 +64,7 @@ function Nav() {
                 to="/"
                 activeClassName="active"
                 className="nav-links"
-                onClick={click ? handleClick : null}
+                onClick={click ? {handleClick }: null}
               >
                 Home
               </Link>
@@ -74,6 +74,7 @@ function Nav() {
               <Link
                 className="nav-links"
                 to="/login"
+                onClick={click ? handleClick  : null}
               >
                 Login
               </Link>
@@ -96,7 +97,7 @@ function Nav() {
               <button
              
                 className="nav-links"
-                onClick={()=> navigate('/home')} style={{backgroundColor:"transparent",border:"none", height:""}}
+                onClick={()=> {navigate('/home');handleClick()}} style={{backgroundColor:"transparent",border:"none", height:""}}
               >
                 Home
               </button>
@@ -105,7 +106,7 @@ function Nav() {
               <button
               
                 className="nav-links"
-                onClick={()=>{navigate('/myorders')}} style={{backgroundColor:"transparent",border:"none", height:""}}
+                onClick={()=>{navigate('/myorders');handleClick()}} style={{backgroundColor:"transparent",border:"none", height:""}}
               >
                 Myorders
               </button>
@@ -113,7 +114,7 @@ function Nav() {
             <li className="nav-item">
               <button
                 className="nav-links"
-                onClick={showCart} style={{backgroundColor:"transparent",border:"none", height:""}}
+                onClick={()=>{showCart();handleClick()}} style={{backgroundColor:"transparent",border:"none", height:""}}
               >
                 
               
@@ -126,20 +127,23 @@ function Nav() {
             <li className="nav-item">
               <button
                 className="nav-links"
-                onClick={handleLogout} style={{backgroundColor:"transparent",border:"none", height:""}}
+                onClick={()=>{handleLogout();handleClick()}} style={{backgroundColor:"transparent",border:"none", height:""}}
               >
                Logout 
               </button>
             </li>
             </ul>
             </div>}
-          <div className="nav-icon" onClick={handleClick}>
+          <div className="nav-icon" onClick={()=>{handleClick()}}>
             <i className={click ? "fa fa-times" : "fa fa-bars"}></i>
           </div>
         </div>
       </nav>
     </ div>
-  );
+  );}
+  else{
+
+  }
 }
 
 

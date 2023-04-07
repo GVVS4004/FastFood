@@ -17,6 +17,10 @@ const OrderSchema = new Schema({
         type: Date,
         required:true,
     },
+    order_timeStamp:{
+        type:Date,
+        required:true,
+    },
     delivery_type:{
         type:String,
         required:true,
@@ -25,7 +29,12 @@ const OrderSchema = new Schema({
         type:Number,
         required:true,
     },
+    order_status:{
+        type:Number,
+        required:true,
+    },
     required:true,
+    
 
 }
 })

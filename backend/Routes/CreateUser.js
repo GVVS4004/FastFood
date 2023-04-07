@@ -17,18 +17,26 @@ router.post('/createUser',[body('name').isLength({min:1})],bodyParser.json(),asy
         const salt= await bcrypt.genSalt(10);
         let secPassword =await bcrypt.hash(req.body.password,salt)
         try{
-            // console.log(req.body.name);
+            console.log(req.body.name);
             await User.create({
                 name:req.body.name,
                 password:secPassword,
                 email:req.body.email,
                 location:req.body.location,
             });
-            res.json({success:true});
+            let userData = await User.findOne({"email":req.body.email})
+            const data={
+                user:{
+                    id:userData.id,
+                }
+            }
+            const authToken = jwt.sign(data,jwtSecret);
+
+            return res.json({success:true,authToken:authToken});
         }
         catch(error){
             console.log(error);
-            res.json({success:false});
+            return res.json({success:false});
         }
 });
 

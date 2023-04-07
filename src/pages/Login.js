@@ -26,7 +26,28 @@ export default function Login() {
       navigate("/home")
     }
   }
+  const handleAdmin = async function(e){
+    e.preventDefault();
+    const response = await fetch(`${process.env.REACT_APP_SERVER}/api/authAdmin`,{
+        method:'POST',
+        headers:{
+            "Content-Type":"application/json",
+        },
+        body:JSON.stringify({email:cred.email,password:cred.password}),
+    });
+    const json= await response.json();
+    // global.Json= json;
+    console.log(json);
+    if (!json.success){
+        alert(json.errors);
+    }
+    if (json.success){
+      localStorage.setItem("adminEmail",cred.email);
+      localStorage.setItem('authAdminToken',json.authToken);
+      navigate("/adminHome");
+    }
 
+  }
   const onChange= function(data){
     setCred({...cred,[data.target.name]:data.target.value})
   }
@@ -76,8 +97,9 @@ export default function Login() {
                     </div>
                   </div>
                   <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button type="submit" className="btn btn-primary btn-lg" style={{"margin-right":"15%"}}>Login</button>
-                    <Link to="/signup" className="btn btn-primary btn-lg" >Create Account</Link>
+                    <button type="submit" className="btn btn-primary btn-md" style={{"margin-right":"10%"}}>Login as User</button>
+                    {/* <button className="btn btn-danger btn-md" style={{"margin-right":"10%"}} onClick={handleAdmin}>Login as Admin</button> */}
+                    <Link to="/signup" className="btn btn-primary btn-md" >Create Account</Link>
                   </div>
                   
                   <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">

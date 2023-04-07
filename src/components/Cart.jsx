@@ -60,7 +60,7 @@ export default function Cart(props) {
     forceUpdate();
   };
   const handleCheckOut = async () => {
-    console.log("checkOut",data);
+    // console.log("checkOut",data);
     let response = await fetch(`${process.env.REACT_APP_SERVER}/api/orderData`, {
       method: "POST",
       headers: {
