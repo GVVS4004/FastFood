@@ -5,7 +5,7 @@ const mongoDB =require("./db");
 mongoDB();
 
 app.use(function(req, res, next) {
-    res.setHeader("Access-Control-Allow-Origin","https://fastfood-za9r.onrender.com/")
+    res.setHeader("Access-Control-Allow-Origin","https://fastfood-za9r.onrender.com")
     res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();})
@@ -14,7 +14,8 @@ app.use('/api',require("./Routes/CreateUser"));
 app.use('/api',require("./Routes/DisplayData"));
 app.use('/api',require("./Routes/OderData"));
 app.use('/api',require('./Routes/UserCart'));
-app.use('/api',require('./Routes/UserContact'))
+app.use('/api',require('./Routes/UserContact'));
+app.use('/api',require("./Routes/AdminAuth"));
 app.get('/',(req,res)=>{
     res.send("hello world");
 })
