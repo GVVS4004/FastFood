@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 // import { mongoKey } from "./secret";
 const mongoKey = require('./secret.js');
-const url="mongodb+srv://gvijay4004:"+mongoKey+"@cluster0.gb2rwlo.mongodb.net/FastFoodDatabase?retryWrites=true&w=majority";
+require("dotenv").config({path:"../.env"})
+const url=process.env.REACT_APP_MONGO_SERVER;
 const url1="mongodb://localhost:27017/FastFood";
 const mongoDB= async ()=>{
     mongoose.connect(url, { useNewUrlParser: true },async (err, res) => {
@@ -10,7 +11,6 @@ const mongoDB= async ()=>{
         else {
             console.log("connected");
             const foodData = await mongoose.connection.db.collection("fooddata"); 
-            // console.log(data.findOne({"CategoryName":"Biryani/Rice"}).then(result=>{console.log(result);}));
             foodData.find({}).toArray(function name(err,data) {
                 // console.log(data);
                 if(err){
