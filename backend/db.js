@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 // import { mongoKey } from "./secret";
-const mongoKey = require('./secret.js');
+// const mongoKey = require('./secret.js');
 require("dotenv").config({path:"../.env"})
 const url=process.env.REACT_APP_MONGO_SERVER;
 const url1="mongodb://localhost:27017/FastFood";
