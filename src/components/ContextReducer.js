@@ -163,7 +163,7 @@ export default function CartProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, []);
 
   useEffect(() => {
-    loadcart();
+    if (token !== null) loadcart();
   }, []);
   return (
     <CartDispatchContext.Provider value={dispatch}>

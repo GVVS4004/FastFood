@@ -3,7 +3,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Menu from "./pages/Menu";
 import Contact from "./pages/Contact";
-import Footer from "./components/footer";
 import Cart from "./components/Cart";
 import LandingPage from "./pages/LandingPage";
 import MyOrders from "./pages/MyOrders";
@@ -11,7 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Nav from "./components/Navbar";
 import SignUp from "./pages/SignUp";
-import CartProvider from "./components/ContextReducer";
+
 import AdminHome from "./pages/Admin";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -30,9 +29,8 @@ export default function App() {
     authenticated = res.json().response.success;
     return authenticated;
   };
-  // useEffect(()=>{authenticate()},[]);
   useEffect(() => {
-    if (token && authenticate()) {
+    if (token !== null && authenticate()) {
       navigate("/home");
     }
   }, []);

@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Navcss from "../css/Navbar.css";
-// import Modal from "../Modal";
-// import { useCart } from "./ContextReducer";
-// import Cart from "./Cart";
-import { useReducer } from "react";
-import { CartStateContext, useCart } from "./ContextReducer";
+import { useCart } from "./ContextReducer";
 
 function Nav() {
   const [click, setClick] = React.useState(false);
@@ -24,9 +20,6 @@ function Nav() {
   const showCart = () => {
     navigate("/cart");
   };
-  const isObjectEmpty = (objectName) => {
-    return JSON.stringify(objectName) === "{}";
-  };
 
   const cartItems = useCart();
   const [data, setData] = useState(cartItems);
@@ -43,7 +36,9 @@ function Nav() {
     const x = await res.json();
     setAuthenticated(x.success);
   };
-  authenticate();
+  if (token !== null) {
+    authenticate();
+  }
   useEffect(() => {
     setData(cartItems);
   }, [cartItems, click]);
