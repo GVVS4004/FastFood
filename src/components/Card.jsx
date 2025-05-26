@@ -4,29 +4,10 @@ import "../css/Card.css";
 
 export default function Card(props) {
   let options = props.options;
+  const cartData = useCart();
   const [qty, setQty] = useState(1);
   const [size, setSize] = useState("");
-  const [data, setData] = useState([]);
-  let userEmail = localStorage.getItem("userEmail");
-  const loadcart = async () => {
-    // console.log('async');
-    const res = await fetch(`${process.env.REACT_APP_SERVER}/api/getCart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: userEmail,
-      }),
-    });
-    const data = await res.json();
-    // global.data
-    // console.log(data);
-    setData(data.response.items);
-  };
-  useEffect(() => {
-    loadcart();
-  }, []);
+  const [data, setData] = useState(cartData);
   let priceOptions = [];
   if (options !== undefined) {
     priceOptions = Object.keys(options);
@@ -34,10 +15,11 @@ export default function Card(props) {
   const priceRef = useRef();
   let finalPrice = qty * parseInt(options[size]);
   let dispatch = useDispatchCart();
-
+  useEffect(() => {
+    setData(cartData);
+  }, [cartData]);
   const handleAddToCart = async () => {
     let food = [];
-    // console.log("props",props);
 
     if (data === null) {
       await dispatch({
@@ -47,7 +29,7 @@ export default function Card(props) {
         img: props.foodItem.img,
         description: props.foodItem.description,
         price: finalPrice,
-        itemPrice:parseInt(options[size]),
+        itemPrice: parseInt(options[size]),
         qty: qty,
         size: size,
       });
@@ -58,14 +40,14 @@ export default function Card(props) {
           break;
         }
       }
-      if (food !== []) {
+      if (food.length !== 0) {
         if (food.size === size) {
           await dispatch({
             type: "UPDATE",
             index: props.index,
             id: props.foodItem._id,
             price: finalPrice,
-            itemPrice:parseInt(options[size]),
+            itemPrice: parseInt(options[size]),
             qty: qty,
           });
           return;
@@ -76,7 +58,7 @@ export default function Card(props) {
             name: props.foodItem.name,
             img: props.foodItem.img,
             description: props.foodItem.description,
-            itemPrice:parseInt(options[size]),
+            itemPrice: parseInt(options[size]),
             price: finalPrice,
             qty: qty,
             size: size,
@@ -93,7 +75,7 @@ export default function Card(props) {
         img: props.foodItem.img,
         description: props.foodItem.description,
         price: finalPrice,
-        itemPrice:parseInt(options[size]),
+        itemPrice: parseInt(options[size]),
         qty: qty,
         size: size,
       });
@@ -104,26 +86,15 @@ export default function Card(props) {
   }, []);
 
   return (
-    <figure class="snip1396 green">
-      <img
-        src={props.foodItem.img}
-        alt="pr-sample13"
-        style={{ height: "485px", width: "100%" }}
-      />
+    <figure class="snip1396 green" style={{ height: "485px", width: "100%" }}>
+      <img src={props.foodItem.img} alt="pr-sample13" style={{ height: "485px", width: "100%" }} />
       <div class="image">
-        <img
-          src={props.foodItem.img}
-          alt="pr-sample13"
-          style={{ height: "400px", width: "100%" }}
-        />
+        <img src={props.foodItem.img} alt="image" style={{ height: "400px", width: "100%" }} />
       </div>
       <figcaption>
         <h3>{props.foodItem.name}</h3>
         <p>{props.foodItem.description.slice(0, 100)}</p>
-        <div
-          className="container w-100"
-          style={{ paddingLeft: "0px", marginBottom: "0%" }}
-        >
+        <div className="container w-100" style={{ paddingLeft: "0px", marginBottom: "0%" }}>
           <select
             className="m-2 h200 bg-warning rounded"
             style={{ marginRight: "0px" }}
@@ -147,7 +118,7 @@ export default function Card(props) {
               setSize(e.target.value);
             }}
           >
-            {priceOptions !== []
+            {priceOptions.length !== 0
               ? priceOptions.map((data) => {
                   return (
                     <option key={data} vlaue={data}>
@@ -163,11 +134,7 @@ export default function Card(props) {
         </div>
       </figcaption>
 
-      <button
-        class="add-to-cart"
-        style={{ backgroundColor: "transparent", border: "none" }}
-        onClick={handleAddToCart} 
-      >
+      <button class="add-to-cart" style={{ backgroundColor: "transparent", border: "none" }} onClick={handleAddToCart}>
         Add to Cart<i class="ion-android-checkbox-outline"></i>
       </button>
     </figure>

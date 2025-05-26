@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 // import useNavigate from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function Admin() {
-    const [click, setClick] = React.useState(false);
+  const [click, setClick] = React.useState(false);
   const navigate = useNavigate();
   const handleClick = () => setClick(!click);
   const Close = () => setClick(false);
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     // let authToken=localStorage.getItem('authAdminToken')
-    localStorage.removeItem('authAdminToken');
+    localStorage.removeItem("authAdminToken");
     // localStorage.removeItem(authToken);
     navigate("/");
-  }
+  };
   const loaddata = async () => {
     let response = await fetch(`${process.env.REACT_APP_SERVER}/api/adminOrders`, {
       method: "POST",
@@ -20,23 +20,23 @@ export default function Admin() {
         "Content-Type": "application/json",
       },
     });
-    console.log(response.json());
-
-}
-useEffect(()=>{loaddata()},[])
+  };
+  useEffect(() => {
+    loaddata();
+  }, []);
   return (
     <div>
       {/* <button onClick={localStorage.removeItem("authAdminToken")}>logout</button> */}
-      <div >
-     <div className={click ? "main-container" : ""}  onClick={()=>Close()} />
-      <nav className="navbar" onClick={e => e.stopPropagation()}>
-        <div className="nav-container">
-          <div  className="nav-logo">
-            <h2 >FastFood</h2>
-          </div>
-          <div>
-            <ul className={click ? "nav-menu active" : "nav-menu"}>
-            {/* <li className="nav-item">
+      <div>
+        <div className={click ? "main-container" : ""} onClick={() => Close()} />
+        <nav className="navbar" onClick={(e) => e.stopPropagation()}>
+          <div className="nav-container">
+            <div className="nav-logo">
+              <h2>FastFood</h2>
+            </div>
+            <div>
+              <ul className={click ? "nav-menu active" : "nav-menu"}>
+                {/* <li className="nav-item">
               <button
              
                 className="nav-links"
@@ -45,16 +45,18 @@ useEffect(()=>{loaddata()},[])
                 Home
               </button>
             </li> */}
-            <li className="nav-item">
-              <button
-              
-                className="nav-links"
-                onClick={()=>{navigate('/adminHome')}} style={{backgroundColor:"transparent",border:"none", height:""}}
-              >
-                Myorders
-              </button>
-            </li>
-            {/* <li className="nav-item">
+                <li className="nav-item">
+                  <button
+                    className="nav-links"
+                    onClick={() => {
+                      navigate("/adminHome");
+                    }}
+                    style={{ backgroundColor: "transparent", border: "none", height: "" }}
+                  >
+                    Myorders
+                  </button>
+                </li>
+                {/* <li className="nav-item">
               <button
                 className="nav-links"
                 onClick={showCart} style={{backgroundColor:"transparent",border:"none", height:""}}
@@ -67,26 +69,24 @@ useEffect(()=>{loaddata()},[])
 </span>
 </button>
             </li> */}
-            <li className="nav-item">
-              <button
-                className="nav-links"
-                onClick={handleLogout} style={{backgroundColor:"transparent",border:"none", height:""}}
-              >
-               Logout 
-              </button>
-            </li>
-            </ul>
+                <li className="nav-item">
+                  <button
+                    className="nav-links"
+                    onClick={handleLogout}
+                    style={{ backgroundColor: "transparent", border: "none", height: "" }}
+                  >
+                    Logout
+                  </button>
+                </li>
+              </ul>
             </div>
-          <div className="nav-icon" onClick={handleClick}>
-            <i className={click ? "fa fa-times" : "fa fa-bars"}></i>
+            <div className="nav-icon" onClick={handleClick}>
+              <i className={click ? "fa fa-times" : "fa fa-bars"}></i>
+            </div>
           </div>
-        </div>
-      </nav>
-    </ div>
-    <div>
-
+        </nav>
+      </div>
+      <div></div>
     </div>
-
-    </div>
-  )
+  );
 }

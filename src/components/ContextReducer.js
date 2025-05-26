@@ -1,32 +1,44 @@
 import React, { useContext, createContext, useReducer } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-const CartStateContext = createContext();
+export const CartStateContext = createContext();
 const CartDispatchContext = createContext();
 let userEmail = localStorage.getItem("userEmail");
-var set= false;
+const token = localStorage.getItem("authToken");
 const reducer = (state, action) => {
-  
   switch (action.type) {
     case "ADD":
-      var newAr = [
-        ...state,
-        {
-          id: action.id,
-          name: action.name,
-          size: action.size,
-          qty: action.qty,
-          price: action.price,
-          img: action.img,
-          description: action.description,
-          itemPrice:action.itemPrice,
-        },
-      ];
+      var newAr = [...state];
+      var exists = false;
+      newAr.map((item, index) => {
+        if (item.name === action.name && item.size === action.size) {
+          item.qty += 1;
+          exists = true;
+          return item;
+        }
+        return item;
+      });
+      if (!exists) {
+        newAr = [
+          ...state,
+          {
+            id: action.id,
+            name: action.name,
+            size: action.size,
+            qty: action.qty,
+            price: action.price,
+            img: action.img,
+            description: action.description,
+            itemPrice: action.itemPrice,
+          },
+        ];
+      }
       var loadcart = async () => {
-        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/UserCart`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/secure/UserCart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ newAr, email: userEmail }),
         });
@@ -36,16 +48,16 @@ const reducer = (state, action) => {
     case "REMOVE":
       var newAr = [...state];
       newAr.splice(action.index, 1);
-     
+
       var loadcart = async () => {
-        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/UserCart`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/secure/UserCart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ newAr, email: userEmail }),
         });
-  
       };
       loadcart();
       return newAr;
@@ -61,10 +73,11 @@ const reducer = (state, action) => {
         }
       });
       var loadcart = async () => {
-        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/UserCart`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/secure/UserCart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ newAr, email: userEmail }),
         });
@@ -73,18 +86,19 @@ const reducer = (state, action) => {
 
       return newAr;
     case "DROP":
-      newAr=[];
+      newAr = [];
       var loadcart = async () => {
-        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/UserCart`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/secure/UserCart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ newAr, email: userEmail }),
         });
       };
       loadcart();
-      
+
       return newAr;
     case "CARTUPDATE":
       var newAr = [...state];
@@ -94,23 +108,23 @@ const reducer = (state, action) => {
             newAr[index] = {
               ...food,
               qty: food.qty + 1,
-              price: food.price+food.itemPrice,
+              price: food.price + food.itemPrice,
             };
-            console.log("ADD",newAr)
           } else if (action.operation == "SUB") {
             newAr[index] = {
               ...food,
-              qty: food.qty-1  ,
+              qty: food.qty - 1,
               price: food.price - food.itemPrice,
             };
           }
         }
       });
       var loadcart = async () => {
-        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/UserCart`, {
+        const response = await fetch(`${process.env.REACT_APP_SERVER}/api/secure/UserCart`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ newAr, email: userEmail }),
         });
@@ -118,10 +132,10 @@ const reducer = (state, action) => {
       loadcart();
       return newAr;
     case "INITIAL":
-      var newAr=action.items;
+      var newAr = action.items;
 
-      if (action.items===null){
-        newAr=[]
+      if (action.items === null) {
+        newAr = [];
       }
       return newAr;
     default:
@@ -130,37 +144,30 @@ const reducer = (state, action) => {
 };
 
 export default function CartProvider({ children }) {
-    var [newAr,setNewAr] = useState([]);
-      var loadcart = async () => {
-        const res = await fetch(`${process.env.REACT_APP_SERVER}/api/getCart`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: userEmail,
-          }),
-        });
-        const data = await res.json();
-        setNewAr(data.response.items);
-        dispatch({type:"INITIAL",items:data.response.items});
-      
+  var [newAr, setNewAr] = useState([]);
+  var loadcart = async () => {
+    const res = await fetch(`${process.env.REACT_APP_SERVER}/api/secure/getCart`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        email: userEmail,
+      }),
+    });
+    const data = await res.json();
+    setNewAr(data.response.items);
+    dispatch({ type: "INITIAL", items: data.response.items });
+  };
+  const [state, dispatch] = useReducer(reducer, []);
 
-      };
-      const [state, dispatch] = useReducer(reducer,[]);
- 
-  
   useEffect(() => {
-    // console.log(set);
     loadcart();
-
-  }
-, []);
+  }, []);
   return (
     <CartDispatchContext.Provider value={dispatch}>
-      <CartStateContext.Provider value={state}>
-        {children}
-      </CartStateContext.Provider>
+      <CartStateContext.Provider value={state}>{children}</CartStateContext.Provider>
     </CartDispatchContext.Provider>
   );
 }

@@ -7,7 +7,6 @@ function Menu() {
   const [foodItems, setFoodItems] = useState([]);
   const [search, setSearch] = useState("");
   const loaddata = async () => {
-    console.log(process.env.REACT_APP_SERVER);
     let response = await fetch(`${process.env.REACT_APP_SERVER}/api/foodData`, {
       method: "POST",
       headers: {
@@ -17,8 +16,6 @@ function Menu() {
     response = await response.json();
     setFoodCat(response[1]);
     setFoodItems(response[0]);
-
-    // await foodItems.map(data=>{console.log(data.options[0])});
   };
   useEffect(() => {
     loaddata();
@@ -28,54 +25,43 @@ function Menu() {
   };
   return (
     <>
-     
-        
       <Carousel onSubmit={getSearch} />
       <div className="container">
-        {foodCat !== []
+        {foodCat.length !== 0
           ? foodCat.map((data) => {
-            var temp=foodItems!==[]?foodItems.filter(
-              (item) => (item.CategoryName === data.CategoryName) && (item.name.toLowerCase().includes(search.toLocaleLowerCase()))):''
-              // console.log(temp);
+              var temp =
+                foodItems.length !== 0
+                  ? foodItems.filter(
+                      (item) =>
+                        item.CategoryName === data.CategoryName &&
+                        item.name.toLowerCase().includes(search.toLocaleLowerCase()),
+                    )
+                  : "";
               return (
-                
                 <div className="row mb-3">
-                    <div className="fs-3 m-3"> 
-
-                  {
-                    temp!==[]?temp[0]&&temp[0].CategoryName:''
-                  
-
-                      }
-                      </div>
+                  <div className="fs-3 m-3">{temp.length !== 0 ? temp[0] && temp[0].CategoryName : ""}</div>
                   <hr />
-          
-                  {
-                    // console.log(foodItems.options[0]);
 
-                    foodItems !== []
-                      ? foodItems
-                          .filter(
-                            (item) => (item.CategoryName === data.CategoryName) && (item.name.toLowerCase().includes(search.toLocaleLowerCase()))
-                          )
-                          .map((filterItems,index) => {
-                            // console.log(filterItems.options[0])
-                            return (
-                              <div
+                  {foodItems.length !== 0
+                    ? foodItems
+                        .filter(
+                          (item) =>
+                            item.CategoryName === data.CategoryName &&
+                            item.name.toLowerCase().includes(search.toLocaleLowerCase()),
+                        )
+                        .map((filterItems, index) => {
+                          return (
+                            <div key={filterItems._id} className="col-12 col-md-6 col-lg-3">
+                              <MenuCard
                                 key={filterItems._id}
-                                className="col-12 col-md-6 col-lg-3"
-                              >
-                                <MenuCard
-                                  key={filterItems._id}
-                                  foodItem={filterItems}
-                                  options={filterItems.options[0]}
-                                  index={index}
-                                />
-                              </div>
-                            );
-                          })
-                      : ""
-                  }
+                                foodItem={filterItems}
+                                options={filterItems.options[0]}
+                                index={index}
+                              />
+                            </div>
+                          );
+                        })
+                    : ""}
                 </div>
               );
             })

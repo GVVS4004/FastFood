@@ -9,43 +9,32 @@ export default function MenuCard(props) {
   const [size, setSize] = useState("");
   const [data, setData] = useState([]);
 
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   let priceOptions = [];
   if (options !== undefined) {
     priceOptions = Object.keys(options);
   }
   const priceRef = useRef();
   let finalPrice = qty * parseInt(options[size]);
-//   let dispatch = useDispatchCart();
+  //   let dispatch = useDispatchCart();
 
   const handleAddToCart = () => {
-    navigate('/login')
-  }
+    navigate("/login");
+  };
   useEffect(() => {
     setSize(priceRef.current.value);
   }, []);
 
   return (
     <figure class="snip1396 green">
-      <img
-        src={props.foodItem.img}
-        alt="pr-sample13"
-        style={{ height: "485px", width: "100%" }}
-      />
+      <img src={props.foodItem.img} alt="pr-sample13" style={{ height: "485px", width: "100%" }} />
       <div class="image">
-        <img
-          src={props.foodItem.img}
-          alt="pr-sample13"
-          style={{ height: "400px", width: "100%" }}
-        />
+        <img src={props.foodItem.img} alt="pr-sample13" style={{ height: "400px", width: "100%" }} />
       </div>
       <figcaption>
         <h3>{props.foodItem.name}</h3>
         <p>{props.foodItem.description.slice(0, 100)}</p>
-        <div
-          className="container w-100"
-          style={{ paddingLeft: "0px", marginBottom: "0%" }}
-        >
+        <div className="container w-100" style={{ paddingLeft: "0px", marginBottom: "0%" }}>
           <select
             className="m-2 h200 bg-warning rounded"
             style={{ marginRight: "0px" }}
@@ -85,14 +74,9 @@ export default function MenuCard(props) {
         </div>
       </figcaption>
 
-      <button
-        class="add-to-cart"
-        style={{ backgroundColor: "transparent", border: "none" }}
-        onClick={handleAddToCart} 
-      >
+      <button class="add-to-cart" style={{ backgroundColor: "transparent", border: "none" }} onClick={handleAddToCart}>
         Add to Cart<i class="ion-android-checkbox-outline"></i>
       </button>
     </figure>
   );
-            }
-
+}
