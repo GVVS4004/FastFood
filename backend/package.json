@@ -4,17 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier:fix": "prettier --config ./.prettierrc --write --ignore-unknown ./"
   },
   "author": "Vijay",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-validator": "^6.15.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.2",
     "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "prettier": "3.2.5"
   }
 }

@@ -1,7 +1,7 @@
 @import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
 @import url(https://fonts.googleapis.com/css?family=Raleway:500,700);
 .snip1396 {
-  font-family: 'Raleway', Arial, sans-serif;
+  font-family: "Raleway", Arial, sans-serif;
   position: relative;
   overflow: hidden;
   margin: 10px;
@@ -47,7 +47,9 @@
   right: 0;
   left: 0;
   overflow: hidden;
-  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1), 0px 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0px 1px 5px rgba(0, 0, 0, 0.1),
+    0px 1px 0 rgba(255, 255, 255, 0.2);
 }
 .snip1396 .image img {
   position: absolute;
@@ -88,11 +90,11 @@
 }
 .snip1396 .price {
   right: 0;
-  bottom:7px
+  bottom: 7px;
 }
-.snip1396 .container{
-  position:absolute;
-  bottom:0
+.snip1396 .container {
+  position: absolute;
+  bottom: 0;
 }
 .snip1396 .price {
   margin-right: 0px;
@@ -121,6 +123,6 @@
   opacity: 1;
 }
 
- .item:hover{
+.item:hover {
   background-color: aqua;
 }
