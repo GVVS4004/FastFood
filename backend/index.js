@@ -1,9 +1,9 @@
 const express = require("express");
+require("dotenv").config({ path: "../.env" });
 const app = express();
-const port = 5000;
+const port = process.env.SERVER_PORT;
 const mongoDB = require("./db");
 const checkAuth = require("./authenticate");
-require("dotenv").config({ path: "../.env" });
 mongoDB();
 
 app.use(function (req, res, next) {
