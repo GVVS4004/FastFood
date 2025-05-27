@@ -1,13 +1,13 @@
 const express = require("express");
+require("dotenv").config({ path: "../.env" });
 const app = express();
-const port = 5000;
+const port = process.env.SERVER_PORT;
 const mongoDB = require("./db");
 const checkAuth = require("./authenticate");
-require("dotenv").config({ path: "../.env" });
 mongoDB();
 
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", process.env.REACT_APP_URL);
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
   next();
